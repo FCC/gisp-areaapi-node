@@ -1,15 +1,18 @@
 GISP Area API
 ======
-**GISP Area API** returns area info such as census block, county, state, and market areas based on latitude/longitude input.
+GISP Area API returns area info such as census block, county, state, and market areas based on latitude/longitude input.
 
-#### Screenshot
-<img width="428" alt="screen shot 2016-11-17 at 1 25 33 pm" src="https://cloud.githubusercontent.com/assets/23366275/20402128/7fb342cc-acc9-11e6-9c4a-8542b967c64e.png">
 
 ## System Requirements
-NodeJS and Postgres. 
+* NodeJS and Postgres. 
 
-## Setup and How-to use this code
-Clone
-*git clone https://github.com/FCC/gisp-areaapi-node.git
+## Version
+* Version 1.0
 
+## Contact
+* e-mail: maps@fcc.gov
+
+## Example Calls
+* http://gisp-areaapi-node-dev.us-west-2.elasticbeanstalk.com/area.json?lat=38.26&lon=-77.51
+* http://gisp-areaapi-node-dev.us-west-2.elasticbeanstalk.com/area.json?lat=38:15:30N&lon=77:30:30W
 
