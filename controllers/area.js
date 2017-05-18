@@ -25,14 +25,10 @@ pg_query(q, [], function(pg_err, pg_rows, pg_res){
 });
 
 
-
-
 var query_area = function (lat, lon, callback) {
 
 	var q = "SELECT block_fips,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM " + 
 		DB_SCHEMA + ".areaapi_block WHERE ST_Intersects(geom, ST_SetSRID(ST_MakePoint($2, $1),4326))";
-
-	console.log(q);
 
 	var vals = [lat, lon];
 
@@ -44,7 +40,6 @@ var query_area = function (lat, lon, callback) {
 		}
 		else {
 
-			console.log(pg_rows);
 			for (var i = 0; i < pg_rows.length; i++) {
 				pg_rows[i].block_pop_2015 = parseInt(pg_rows[i].block_pop_2015, 10);
 
@@ -224,10 +219,6 @@ var getArea = function(req, res) {
 		var lon1 = parseFloat(lon);
 	}
 
-
-
-	console.log("lat1", lat1, ' lon1', lon1);
-
 	if (lat1 < -90 || lat1 > 90 || lon1 < -180 || lon1 > 180) {
 		console.log('\n' + 'invalid lat/lon range');
 		res.status(400).send({
@@ -238,7 +229,6 @@ var getArea = function(req, res) {
 		return;
 
 	}
-
 
 
 	query_area(lat1, lon1, function (error, result) {

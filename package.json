@@ -1,6 +1,6 @@
 {
   "name": "areaapi",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "FCC Area API - Node.js",
   "main": "app.js",
   "scripts": {
