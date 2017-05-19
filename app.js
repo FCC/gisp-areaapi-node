@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 // **********************************************************
 
 'use strict';
@@ -50,7 +52,9 @@ app.use(cors());
 
 var logDirectory = path.join(__dirname,'/log');
 
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory);
+}
 
 var accessLogStream = fsr.getStream({
     filename: logDirectory + '/fcc-areaapi-%DATE%.log',
@@ -58,7 +62,7 @@ var accessLogStream = fsr.getStream({
     verbose: false
 });
 
-app.use(morgan('combined', {stream: accessLogStream}))
+app.use(morgan('combined', {stream: accessLogStream}));
 
 // **********************************************************
 // parser

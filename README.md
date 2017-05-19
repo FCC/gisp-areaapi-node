@@ -16,6 +16,18 @@ GISP Area API returns area info such as census block, county, state, and market 
 ## Version
 * Version 1.0
 
+## Install
+* `git clone https://github.com/FCC/gisp-areaapi-node.git`
+
+## Unit Test
+* npm run test
+
+## Code Coverage
+* npm run cover
+
+## Linting
+* npm run lint
+
 ## Contact
 * e-mail: maps@fcc.gov
 

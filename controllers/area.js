@@ -1,4 +1,6 @@
 
+/* jshint node: true */
+
 // **********************************************************
 
 'use strict';
@@ -49,7 +51,7 @@ var query_area = function (lat, lon, callback) {
 			var entry = {"input":
 							{"lat": lat, "lon": lon},
 					"results": pg_rows
-						}
+						};
 
 			callback(null, entry);
 
@@ -59,16 +61,18 @@ var query_area = function (lat, lon, callback) {
 
 	});
 
-}
+};
 
 var getArea = function(req, res) {
 	console.log('================== getArea API =============');
 
-	var lat = req.query.lat;
-	var lon = req.query.lon;
+	var deg, min, sec, lat, lon, lat1, lon1, lat_dir, lon_dir, arr;
+
+	lat = req.query.lat;
+	lon = req.query.lon;
 
 	
-	if (lat == undefined || lat == "") {
+	if (lat === undefined || lat === "") {
 		console.log('\n' + 'missing lat');
 		res.status(400).send({
 			'status': 'error',
@@ -78,7 +82,7 @@ var getArea = function(req, res) {
 		return;
 	}
 
-	if (lon == undefined || lon == "") {
+	if (lon === undefined || lon === "") {
 		console.log('\n' + 'missing lon');
 		res.status(400).send({
 			'status': 'error',
@@ -114,7 +118,7 @@ var getArea = function(req, res) {
 
 	if (lat.match(/:/)) {
 
-		var lat_dir = lat[lat.length-1].toLowerCase();
+		lat_dir = lat[lat.length-1].toLowerCase();
 		if (lat_dir != "n" && lat_dir != "s") {
 			console.log('\n' + 'wrong lat format');
 			res.status(400).send({
@@ -125,7 +129,7 @@ var getArea = function(req, res) {
 			return;
 		}
 
-		var arr = (lat.slice(0, -1)).split(":");
+		arr = (lat.slice(0, -1)).split(":");
 
 		if (arr.length != 3) {
 			console.log('\n' + 'wrong lat format');
@@ -137,9 +141,9 @@ var getArea = function(req, res) {
 			return;
 		}
 
-		var deg = arr[0];
-		var min = arr[1];
-		var sec = arr[2];
+		deg = arr[0];
+		min = arr[1];
+		sec = arr[2];
 
 		if (isNaN(deg) || isNaN(min) || isNaN(sec)) {
 			console.log('\n' + 'wrong lat format');
@@ -155,7 +159,7 @@ var getArea = function(req, res) {
 		min = parseFloat(min, 10);
 		sec = parseFloat(sec, 10);
 
-		var lat1 = deg + min/60.0 + sec/3600.0;
+		lat1 = deg + min/60.0 + sec/3600.0;
 
 		if (lat_dir == "s") {
 			lat1 *= -1;
@@ -163,12 +167,12 @@ var getArea = function(req, res) {
 
 	}
 	else {
-		var lat1 = parseFloat(lat);
+		lat1 = parseFloat(lat);
 	}
 
 	if (lon.match(/:/)) {
 
-		var lon_dir = lon[lon.length-1].toLowerCase();
+		lon_dir = lon[lon.length-1].toLowerCase();
 		if (lon_dir != "w" && lon_dir != "e") {
 			console.log('\n' + 'wrong lon format');
 			res.status(400).send({
@@ -179,7 +183,7 @@ var getArea = function(req, res) {
 			return;
 		}
 
-		var arr = (lon.slice(0, -1)).split(":");
+		arr = (lon.slice(0, -1)).split(":");
 
 		if (arr.length != 3) {
 			console.log('\n' + 'wrong lon format');
@@ -191,9 +195,9 @@ var getArea = function(req, res) {
 			return;
 		}
 
-		var deg = arr[0];
-		var min = arr[1];
-		var sec = arr[2];
+		deg = arr[0];
+		min = arr[1];
+		sec = arr[2];
 
 		if (isNaN(deg) || isNaN(min) || isNaN(sec)) {
 			console.log('\n' + 'wrong lon format');
@@ -209,14 +213,14 @@ var getArea = function(req, res) {
 		min = parseFloat(min, 10);
 		sec = parseFloat(sec, 10);
 
-		var lon1 = deg + min/60.0 + sec/3600.0;
+		lon1 = deg + min/60.0 + sec/3600.0;
 
 		if (lon_dir == "w") {
 			lon1 *= -1;
 		}
 	}
 	else {
-		var lon1 = parseFloat(lon);
+		lon1 = parseFloat(lon);
 	}
 
 	if (lat1 < -90 || lat1 > 90 || lon1 < -180 || lon1 > 180) {
@@ -227,7 +231,6 @@ var getArea = function(req, res) {
 			'statusMessage': 'invalid lat/lon range.'
 		});
 		return;
-
 	}
 
 
@@ -246,13 +249,8 @@ var getArea = function(req, res) {
 			);
 			return;
 		}
-
-
 	});
-
-
-
-}
+};
 
 
 module.exports.getArea = getArea;
