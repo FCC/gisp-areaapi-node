@@ -66,12 +66,22 @@ var query_area = function (lat, lon, callback) {
 var getArea = function(req, res) {
 	console.log('================== getArea API =============');
 
-	var deg, min, sec, lat, lon, lat1, lon1, lat_dir, lon_dir, arr;
+	var deg, min, sec, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr;
 
 	lat = req.query.lat;
 	lon = req.query.lon;
+	latitude = req.query.latitude; // for old APi
+	longitude = req.query.longitude; //for old API
 
-	
+
+	if (lat === undefined && latitude) {
+		lat = latitude;
+	}
+	if (lon === undefined && longitude) {
+		lon = longitude;
+	}
+
+
 	if (lat === undefined || lat === "") {
 		console.log('\n' + 'missing lat');
 		res.status(400).send({
@@ -244,9 +254,19 @@ var getArea = function(req, res) {
 			return;
 		}
 		else {
-			res.status(200).send(
-				result
-			);
+
+			if (latitude && longitude) {
+
+				var xml = '<Response status="OK" executionTime="0"><Block FIPS="' + result.results[0].block_fips + 
+							'"/><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name + 
+							'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
+							'" name="' +   result.results[0].state_name + '"/></Response>';
+				res.status(200).set('Content-Type', 'text/xml').send(xml);
+
+			}
+			else {
+				res.status(200).send(result);
+			}
 			return;
 		}
 	});

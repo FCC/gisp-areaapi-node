@@ -73,16 +73,16 @@ app.use(bodyparser.urlencoded({ extended: false }));
 // **********************************************************
 // route
 
+
 app.get('/area.json', function(req, res){
-    area.getArea(req, res, function(error, response) {
-    if (error) {
-        res.status(400).send({"status": "error", "statusCode": 400, "statusMessage": error});
-    }
-    else  {
-    res.send(response);
-    }
-    });
+    area.getArea(req, res)
 });
+
+
+app.get('/api/block/find', function(req, res){
+    area.getArea(req, res)
+});
+
 
 app.get('/', function(req, res){
 
