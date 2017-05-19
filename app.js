@@ -48,6 +48,25 @@ app.enable('strict routing');
 app.use(cors());
 
 // **********************************************************
+// route
+
+app.use('/', express.static(path.join(__dirname, '/public')));
+app.use('/index.html', express.static(path.join(__dirname ,'/public')));
+
+app.use('/api/area', function(req, res, next) {
+   
+  var newUrl = req.originalUrl.split('api/area')[1];
+  if (newUrl === "" || newUrl === undefined) {
+    newUrl = "/";
+  }
+  console.log('redirect to /');
+  res.redirect(301, newUrl);
+
+    //next();
+});
+
+
+// **********************************************************
 // log
 
 var logDirectory = path.join(__dirname,'/log');

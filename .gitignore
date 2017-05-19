@@ -37,6 +37,8 @@ bower_components
 # data folder
 data
 
+# Source maps
+.css.map
 
 # DevOps
 .ebextensions
