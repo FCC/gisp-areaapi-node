@@ -5,7 +5,7 @@
 'use strict';
 
 // **********************************************************
-// require 
+// require
 
 var express = require('express');
 var fs = require('fs');
@@ -14,20 +14,21 @@ var cors = require('cors');
 var bodyparser = require('body-parser');
 var path = require('path');
 var fsr = require('file-stream-rotator');
+var helmet = require('helmet');
 
-var package_json = require('./package.json');
+let package_json = require('./package.json');
 
-var dotenv = require('dotenv').load();
+let dotenv = require('dotenv').load();
 
-var area = require('./controllers/area.js');
+let area = require('./controllers/area.js');
 
 
 // **********************************************************
 // config
 
-var NODE_ENV = process.env.NODE_ENV;
+let NODE_ENV = process.env.NODE_ENV;
 
-var NODE_PORT = process.env.PORT;
+let NODE_PORT = process.env.PORT;
 
 // **********************************************************
 // console start
@@ -42,43 +43,44 @@ console.log('## ENV ## DB_SCHEMA: '+process.env.DB_SCHEMA);
 // **********************************************************
 // app
 
-var app = express();
+let app = express();
 app.enable('strict routing');
 
 app.use(cors());
+app.use(helmet());
 
 // **********************************************************
 // route
 
 app.use('/', express.static(path.join(__dirname, '/public')));
-app.use('/index.html', express.static(path.join(__dirname ,'/public')));
+app.use('/index.html', express.static(path.join(__dirname, '/public')));
 
 app.use('/api/area', function(req, res, next) {
    
-  var newUrl = req.originalUrl.split('api/area')[1];
-  if (newUrl === "" || newUrl === undefined) {
-    newUrl = "/";
+  let newUrl = req.originalUrl.split('api/area')[1];
+  if (newUrl === '' || newUrl === undefined) {
+    newUrl = '/';
   }
   console.log('redirect to /');
   res.redirect(301, newUrl);
 
-    //next();
+    // next();
 });
 
 
 // **********************************************************
 // log
 
-var logDirectory = path.join(__dirname,'/log');
+let logDirectory = path.join(__dirname, '/log');
 
 if (!fs.existsSync(logDirectory)) {
     fs.mkdirSync(logDirectory);
 }
 
-var accessLogStream = fsr.getStream({
+let accessLogStream = fsr.getStream({
     filename: logDirectory + '/fcc-areaapi-%DATE%.log',
     frequency: 'daily',
-    verbose: false
+    verbose: false,
 });
 
 app.use(morgan('combined', {stream: accessLogStream}));
@@ -87,35 +89,35 @@ app.use(morgan('combined', {stream: accessLogStream}));
 // parser
 
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({extended: false}));
 
 // **********************************************************
 // route
 
 
-app.get('/area.json', function(req, res){
-    area.getArea(req, res)
+app.get('/area', function(req, res) {
+    area.getArea(req, res);
 });
 
 
-app.get('/api/block/find', function(req, res){
-    area.getArea(req, res)
+app.get('/api/block/find', function(req, res) {
+    area.getArea(req, res);
 });
 
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
 
-  res.status(200).send("Area API Main Page<p>Example API call:<p> <a href=area.json?lat=38.793&lon=-77.1> area.json?lat=38.793&lon=-77.1</a>");
+  res.status(200).send('Area API Main Page<p>Example API call:<p> <a href=area.json?lat=38.793&lon=-77.1> area.json?lat=38.793&lon=-77.1</a>');
 
 });
 
 // **********************************************************
 // server
 
-var server = app.listen(NODE_PORT, function () {
+var server = app.listen(NODE_PORT, function() {
 
-  var host = server.address().address;
-  var port = server.address().port;
+  let host = server.address().address;
+  let port = server.address().port;
 
   console.log('\n  listening at http://%s:%s', host, port);
 
