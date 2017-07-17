@@ -100,7 +100,8 @@ app.get('/area', function(req, res) {
 });
 
 
-app.get('/api/block/find', function(req, res) {
+// The path for the get function of the exress app is changed by Ahmad Aburizaiza
+app.get('/api/block/2010/find', function(req, res) {
     area.getArea(req, res);
 });
 

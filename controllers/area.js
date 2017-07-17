@@ -30,9 +30,10 @@ pg_query(q, [], function(pg_err, pg_rows, pg_res) {
 
 var query_area = function(lat, lon, callback) {
 
+// The SQL query updated by Ahmad Aburizaiza
 	var q = 'SELECT block_fips,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM ' +
-		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_SetSRID(ST_MakePoint($2, $1),4326))';
-
+		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ORDER BY block_fips';
+	
 	var vals = [lat, lon];
 
 	pg_query(q, vals, function(pg_err, pg_rows, pg_res) {
