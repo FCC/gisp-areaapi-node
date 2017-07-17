@@ -68,7 +68,7 @@ var query_area = function(lat, lon, callback) {
 let getArea = function(req, res) {
 	console.log('================== getArea API =============');
 
-	let deg, min, sec, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr, showall, format;
+	let deg, min, sec, year, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr, showall, format;
 
 	lat = req.query.lat;
 	lon = req.query.lon;
@@ -76,6 +76,7 @@ let getArea = function(req, res) {
 	longitude = req.query.longitude; // for old API
 	showall = req.query.showall; // for old API
 	format = req.query.format; // for old API
+	year = req.params.year;
 
 	if (format != undefined && format != 'json' && format != 'xml' && format != 'jsonp') {
 		console.log('\n' + 'invalid format value');
