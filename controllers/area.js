@@ -30,9 +30,10 @@ pg_query(q, [], function(pg_err, pg_rows, pg_res) {
 
 var query_area = function(lat, lon, callback) {
 
+// The SQL query updated by Ahmad Aburizaiza
 	var q = 'SELECT block_fips,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM ' +
-		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_SetSRID(ST_MakePoint($2, $1),4326))';
-
+		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ORDER BY block_fips';
+	
 	var vals = [lat, lon];
 
 	pg_query(q, vals, function(pg_err, pg_rows, pg_res) {
@@ -67,7 +68,7 @@ var query_area = function(lat, lon, callback) {
 let getArea = function(req, res) {
 	console.log('================== getArea API =============');
 
-	let deg, min, sec, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr, showall, format;
+	let deg, min, sec, year, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr, showall, format;
 
 	lat = req.query.lat;
 	lon = req.query.lon;
@@ -75,6 +76,19 @@ let getArea = function(req, res) {
 	longitude = req.query.longitude; // for old API
 	showall = req.query.showall; // for old API
 	format = req.query.format; // for old API
+	// Year in the API's URL is now a parameter, edited by Ahmad Aburizaiza
+	year = req.params.year;
+
+	// This if statement is temporary until we get an access to census blocks 2000, edited by Ahmad Aburizaiza
+	if (year != '2010') {
+		console.log('\n' + 'The only available census year is 2010');
+		res.status(400).send({
+			'status': 'error',
+			'statusCode': '400',
+			'statusMessage': 'The only available census year for now is 2010',
+		});
+		return;
+	}
 
 	if (format != undefined && format != 'json' && format != 'xml' && format != 'jsonp') {
 		console.log('\n' + 'invalid format value');
