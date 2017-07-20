@@ -82,7 +82,7 @@ let getArea = function(req, res) {
 		year = req.params.year;
 
 		// This if statement is temporary until we get an access to census blocks 2000, edited by Ahmad Aburizaiza
-		if (year != '2010') {
+		if (year !== '2010') {
 			console.log('\n' + 'The only available census year is 2010');
 			res.status(400).send({
 				'status': 'error',
