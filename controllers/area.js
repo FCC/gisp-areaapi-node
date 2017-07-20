@@ -66,30 +66,34 @@ var query_area = function(lat, lon, callback) {
 };
 
 let getArea = function(req, res) {
+
 	console.log('================== getArea API =============');
 
 	let deg, min, sec, year, lat, lon, lat1, lon1, lat_dir, lon_dir, latitude, longitude, arr, showall, format;
 
 	lat = req.query.lat;
 	lon = req.query.lon;
-	latitude = req.query.latitude; // for old APi
+	latitude = req.query.latitude; // for old API
 	longitude = req.query.longitude; // for old API
 	showall = req.query.showall; // for old API
 	format = req.query.format; // for old API
 	// Year in the API's URL is now a parameter, edited by Ahmad Aburizaiza
-	year = req.params.year;
+	if (req.url.includes('api/block/')){
+		year = req.params.year;
 
-	// This if statement is temporary until we get an access to census blocks 2000, edited by Ahmad Aburizaiza
-	if (year != '2010') {
-		console.log('\n' + 'The only available census year is 2010');
-		res.status(400).send({
-			'status': 'error',
-			'statusCode': '400',
-			'statusMessage': 'The only available census year for now is 2010',
-		});
-		return;
+		// This if statement is temporary until we get an access to census blocks 2000, edited by Ahmad Aburizaiza
+		if (year != '2010') {
+			console.log('\n' + 'The only available census year is 2010');
+			res.status(400).send({
+				'status': 'error',
+				'statusCode': '400',
+				'statusMessage': 'The only available census year for now is 2010',
+				});
+			return;
+		}
+		
 	}
-
+	
 	if (format != undefined && format != 'json' && format != 'xml' && format != 'jsonp') {
 		console.log('\n' + 'invalid format value');
 		res.status(400).send({
@@ -100,14 +104,13 @@ let getArea = function(req, res) {
 		return;
 	}
 	
-
 	if (lat === undefined && latitude) {
 		lat = latitude;
 	}
+
 	if (lon === undefined && longitude) {
 		lon = longitude;
 	}
-
 
 	if (lat === undefined || lat === '') {
 		console.log('\n' + 'missing lat');
@@ -140,7 +143,6 @@ let getArea = function(req, res) {
 		return;
 	}
 
-
 	if (!lon.match(/:/) && isNaN(lon)) {
 
 		console.log('\n' + 'invalid lon value');
@@ -151,7 +153,6 @@ let getArea = function(req, res) {
 		});
 		return;
 	}
-
 
 	if (lat.match(/:/)) {
 
@@ -269,7 +270,6 @@ let getArea = function(req, res) {
 		});
 		return;
 	}
-
 
 	query_area(lat1, lon1, function(error, result) {
 		if (error) {
