@@ -16,7 +16,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38.26&lon=-77.51')
+                    .get('/api/area?lat=38.26&lon=-77.51')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -36,7 +36,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:15:30N&lon=77:30:30W')
+                    .get('/api/area?lat=38:15:30N&lon=77:30:30W')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -56,8 +56,8 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:15:30N&lon=77:30:30W&format=xml')
-                    .expect('Content-Type', /xml/)
+                    .get('/api/area?lat=38:15:30N&lon=77:30:30W&format=json')
+                    .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
                         if (err) {
@@ -76,7 +76,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38.26x&lon=-77.51')
+                    .get('/api/area?lat=38.26x&lon=-77.51')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -95,7 +95,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38.26&lon=-77.5x')
+                    .get('/api/area?lat=38.26&lon=-77.5x')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -114,7 +114,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=190&lon=190')
+                    .get('/api/area?lat=190&lon=190')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -133,7 +133,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lon=-77')
+                    .get('/api/area?lon=-77')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -152,7 +152,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38.2')
+                    .get('/api/area?lat=38.2')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -171,7 +171,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:15N&lon=77:30:30W')
+                    .get('/api/area?lat=38:15N&lon=77:30:30W')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -190,7 +190,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:30:15N&lon=77:30W')
+                    .get('/api/area?lat=38:30:15N&lon=77:30W')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -209,7 +209,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:30:15x&lon=77:30:15W')
+                    .get('/api/area?lat=38:30:15x&lon=77:30:15W')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -228,7 +228,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:30:15N&lon=77:30:15x')
+                    .get('/api/area?lat=38:30:15N&lon=77:30:15x')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -247,7 +247,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38x:30:15N&lon=77:30:15W')
+                    .get('/api/area?lat=38x:30:15N&lon=77:30:15W')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -266,7 +266,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:30:15N&lon=77x:30:15W')
+                    .get('/api/area?lat=38:30:15N&lon=77x:30:15W')
                     .expect('Content-Type', /json/)
                     .expect(400)
                     .end(function(err, res) {
@@ -285,7 +285,7 @@ describe('Area API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/area?lat=38:30:15S&lon=77:30:15W')
+                    .get('/api/area?lat=38:30:15S&lon=77:30:15W')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -334,7 +334,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=38.26&longitude=-77.51&format=xml&showall=true')
+                    .get('/api/block/2010/find?latitude=38.26&longitude=-77.51&format=xml&showall=true')
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -351,7 +351,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=38.26&longitude=-77.51&format=json&showall=true')
+                    .get('/api/block/2010/find?latitude=38.26&longitude=-77.51&format=json&showall=true')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -368,7 +368,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=38.26&longitude=-77.51&format=jsonp&showall=true')
+                    .get('/api/block/2010/find?latitude=38.26&longitude=-77.51&format=jsonp&showall=true')
                     .expect('Content-Type', /x-javascript/)
                     .expect(200)
                     .end(function(err, res) {
@@ -385,7 +385,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml&showall=true')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml&showall=true')
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -402,7 +402,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json&showall=true')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json&showall=true')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -419,7 +419,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=jsonp&showall=true')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=jsonp&showall=true')
                     .expect('Content-Type', /x-javascript/)
                     .expect(200)
                     .end(function(err, res) {
@@ -436,7 +436,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml')
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -452,7 +452,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -468,7 +468,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml&showall=')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=xml&showall=')
                     .expect('Content-Type', /xml/)
                     .expect(200)
                     .end(function(err, res) {
@@ -485,7 +485,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json&showall=')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=json&showall=')
                     .expect('Content-Type', /json/)
                     .expect(200)
                     .end(function(err, res) {
@@ -502,7 +502,7 @@ describe('Block API', function() {
                 setTimeout(done, 15000);
 
                 request(server)
-                    .get('/api/block/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=jsonp&showall=')
+                    .get('/api/block/2010/find?latitude=36.084737999999994&longitude=-90.79048499999996&format=jsonp&showall=')
                     .expect('Content-Type', /x-javascript/)
                     .expect(200)
                     .end(function(err, res) {

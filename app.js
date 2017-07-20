@@ -55,9 +55,10 @@ app.use(helmet());
 app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/index.html', express.static(path.join(__dirname, '/public')));
 
-app.use('/api/area', function(req, res, next) {
+app.use('/api/census', function(req, res, next) {
    
-  let newUrl = req.originalUrl.split('api/area')[1];
+  let newUrl = req.originalUrl.split('api/census')[1];
+  
   if (newUrl === '' || newUrl === undefined) {
     newUrl = '/';
   }
@@ -95,10 +96,9 @@ app.use(bodyparser.urlencoded({extended: false}));
 // route
 
 
-app.get('/area', function(req, res) {
+app.get('/api/area', function(req, res) {
     area.getArea(req, res);
 });
-
 
 // The path for the get function of the exress app is changed by Ahmad Aburizaiza
 app.get('/api/block/:year/find', function(req, res) {
