@@ -3,9 +3,9 @@ GISP Area API
 GISP Area API returns area info such as census block, county, state, and market areas based on latitude/longitude input.
 
 ## Example Calls
-* http://gisp-areaapi-node-dev.us-west-2.elasticbeanstalk.com/area?format=json&lat=38.26&lon=-77.51
-* http://gisp-areaapi-node-dev.us-west-2.elasticbeanstalk.com/area?format=json&lat=38:15:30N&lon=77:30:30W
-* http://localhost:6479/api/block/find?format=json&latitude=36.084737999999994&longitude=-90.79048499999996&showall=true
+* https://geo.fcc.gov/api/area?format=json&lat=38.26&lon=-77.51
+* https://geo.fcc.gov/api/area?format=json&lat=38:15:30N&lon=77:30:30W
+* https://geo.fcc.gov/api/block/find?format=json&latitude=36.084737999999994&longitude=-90.79048499999996&showall=true
 
 ## Input Formats for Latitude/Longitude
 * Decimal - latitude range is [-90 90] where negative indicates south. Longitude range is [-180 180] where negative indicates west.
