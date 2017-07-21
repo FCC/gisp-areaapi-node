@@ -4,14 +4,14 @@
         "version": "1.0.0",
         "title": "Area API"
     },
-    "basePath": "/api/block",
+    "basePath": "/",
     "tags": [{
         "name": "area",
         "description": "get census block, county, state, and market area information"
     }],
     "paths": {
 
-        "/{censusYear}/find": {
+        "/api/area": {
             "get": {
                 "tags": ["area"],
                 "summary": "Get area by latitude and longitude",
@@ -31,19 +31,12 @@
                     "type": "number",
                     "default": ""
                 }, {
-                    "name": "censusYear",                    
-                    "in": "path",
-                    "description": "Returns results based on census year.<br><b>Valid values:</b> 2010 (default)",
-                    "required": true,
-                    "type": "number",
-                    "default": "2010"
-                }, {
                     "name": "format",                    
                     "in": "query",
                     "description": "Format for the returned results.<br /><br />Defaults to json.",
                     "required": false,
                     "type": "string",
-                    "default": "xml",
+                    "default": "json",
                     "enum": [
                         "json",
                         "jsonp",
