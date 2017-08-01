@@ -383,6 +383,42 @@ let getArea = function(req, res) {
 					
 					
 				}
+				// This eles if statement is added by Ahmad Aburizaiza
+				// It handles empty query results that were causing the
+				// application to crash, when a user enters coordinates outside the US boundaries
+				else if (result.results.length === 0){
+					if (format === undefined || format === 'xml') {
+						var xml = '<Response status="OK" executionTime="0"><Block FIPS="null"/><County FIPS="null" name="null"/><State FIPS="null" code="null" name="null"/></Response>';
+						res.status(200).set('Content-Type', 'text/xml').send(xml);
+					}
+					else if (format === 'json' || format === 'jsonp') {
+						var json = {
+							'Block': {
+								'FIPS': null,
+								},
+							'County': {
+								'FIPS': null,
+								'name': null,
+								},
+							'State': {
+							'FIPS': null,
+							'code': null,
+							'name': null,
+							},
+							'status': 'OK',
+							'executionTime': '0'
+							};
+
+						if (format === 'json') {
+							res.status(200).set('Content-Type', 'application/json').send(json);
+						}
+						else if (format === 'jsonp') {
+							res.status(200).set('Content-Type', 'application/x-javascript').send('callback(' + JSON.stringify(json) + ')');
+						}
+					
+					}
+
+				}
 				else {
 					if (format === undefined || format === 'xml') {
 						var xml = '<Response status="OK" executionTime="0"><Block FIPS="' + result.results[0].block_fips +
@@ -418,8 +454,6 @@ let getArea = function(req, res) {
 					
 					}
 				}
-
-
 
 			}
 			else {
