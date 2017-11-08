@@ -4,7 +4,7 @@
         "version": "1.0.0",
         "title": "Block API"
     },
-    "basePath": "/api/block",
+    "basePath": "/block",
     "tags": [{
         "name": "block",
         "description": "get census block, county, and state FIPS"
