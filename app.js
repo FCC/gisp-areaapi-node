@@ -55,6 +55,7 @@ app.use(helmet());
 app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/index.html', express.static(path.join(__dirname, '/public')));
 
+/*
 app.use('/api/census', function(req, res, next) {
    
   let newUrl = req.originalUrl.split('api/census')[1];
@@ -67,7 +68,7 @@ app.use('/api/census', function(req, res, next) {
 
     // next();
 });
-
+*/
 
 // **********************************************************
 // log
@@ -94,18 +95,18 @@ app.use(bodyparser.urlencoded({extended: false}));
 
 // **********************************************************
 // route
+// S Bressi - Changed from /api/(apiname) to just /(apiname)
 
-
-app.get('/api/area', function(req, res) {
+app.get('/area', function(req, res) {
     area.getArea(req, res);
 });
 
 // The path for the get function of the exress app is changed by Ahmad Aburizaiza
-app.get('/api/block/find', function(req, res) {
+app.get('/block/find', function(req, res) {
     area.getArea(req, res);
 });
 
-app.get('/api/block/:year/find', function(req, res) {
+app.get('/block/:year/find', function(req, res) {
     area.getArea(req, res);
 });
 
