@@ -11,7 +11,7 @@
     }],
     "paths": {
 
-        "/api/area": {
+        "/area": {
             "get": {
                 "tags": ["area"],
                 "summary": "Get area by latitude and longitude",
