@@ -30,6 +30,9 @@ let NODE_ENV = process.env.NODE_ENV;
 
 let NODE_PORT = process.env.PORT;
 
+// added by Ahmad Aburizaiza
+let NODE_HOST = process.env.HOST;
+
 // **********************************************************
 // console start
 
@@ -122,8 +125,11 @@ app.get('/', function(req, res) {
 
 var server = app.listen(NODE_PORT, function() {
 
-  let host = server.address().address;
-  let port = server.address().port;
+  // Updated by Ahmad Aburizaiza
+  //let host = server.address().address;
+  //let port = server.address().port;
+  let host = NODE_HOST;
+  let port = NODE_PORT;
 
   console.log('\n  listening at http://%s:%s', host, port);
 
