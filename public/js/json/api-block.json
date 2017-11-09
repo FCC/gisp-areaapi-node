@@ -4,14 +4,14 @@
         "version": "1.0.0",
         "title": "Block API"
     },
-    "basePath": "/block",
+    "basePath": "/api/census",
     "tags": [{
         "name": "block",
         "description": "get census block, county, and state FIPS"
     }],
     "paths": {
         
-        "/{censusYear}/find": {
+        "/block/find": {
             "get": {
                 "tags": ["block"],
                 "summary": "Get FIPS by latitude and longitude",
