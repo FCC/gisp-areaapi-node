@@ -4,7 +4,7 @@
         "version": "1.0.0",
         "title": "Area API"
     },
-    "basePath": "/",
+    "basePath": "/api/census",
     "tags": [{
         "name": "area",
         "description": "get census block, county, state, and market area information"
