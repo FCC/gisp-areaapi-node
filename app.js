@@ -127,9 +127,8 @@ var server = app.listen(NODE_PORT, function() {
 
   // Updated by Ahmad Aburizaiza
   //let host = server.address().address;
-  //let port = server.address().port;
   let host = NODE_HOST;
-  let port = NODE_PORT;
+  let port = server.address().port;
 
   console.log('\n  listening at http://%s:%s', host, port);
 
