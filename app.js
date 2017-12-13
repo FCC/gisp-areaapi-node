@@ -58,7 +58,7 @@ app.use(helmet());
 app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/index.html', express.static(path.join(__dirname, '/public')));
 
-/*
+
 app.use('/api/census', function(req, res, next) {
    
   let newUrl = req.originalUrl.split('api/census')[1];
@@ -71,7 +71,7 @@ app.use('/api/census', function(req, res, next) {
 
     // next();
 });
-*/
+
 
 // **********************************************************
 // log
