@@ -308,8 +308,6 @@ let getArea = function(req, res) {
 								}
 						else if (format === 'json' || format === 'jsonp') {
 							var intersection = [];
-							console.log('ahmad');
-							console.log(result.results[0]);
 							for (var i = 0; i < result.results.length; i++) {
 								intersection.push({'FIPF': result.results[i].block_fips});
 							}
@@ -357,8 +355,6 @@ let getArea = function(req, res) {
 							res.status(200).set('Content-Type', 'text/xml').send(xml);
 						}
 						else if (format === 'json' || format === 'jsonp') {
-							console.log('ahmad');
-							console.log(result.results[0]);
 							var json = {
 										'messages': [
 													'FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block'
