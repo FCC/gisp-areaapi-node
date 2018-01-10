@@ -31,7 +31,8 @@ pg_query(q, [], function(pg_err, pg_rows, pg_res) {
 var query_area = function(lat, lon, callback) {
 
 // The SQL query updated by Ahmad Aburizaiza
-	var q = 'SELECT block_fips,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM ' +
+	var bbox = "string_to_array(replace(replace(replace(Cast(box2d(geom) as varchar), ' ', ','), 'BOX(', ''), ')', ''),',')::numeric(10,7)[]";
+	var q = 'SELECT block_fips,'+bbox+' as bbox,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM ' +
 		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ORDER BY block_fips';
 	
 	var vals = [lat, lon];
@@ -54,7 +55,7 @@ var query_area = function(lat, lon, callback) {
 							{'lat': lat, 'lon': lon},
 					'results': pg_rows,
 						};
-
+			
 			callback(null, entry);
 
 			return;
@@ -299,6 +300,7 @@ let getArea = function(req, res) {
 								intersection += '<intersection FIPS="' + result.results[i].block_fips + '"/>';
 							}
 							var xml = '<Response status="OK" executionTime="0"><Block FIPS="' + result.results[0].block_fips +
+								'" bbox="' + result.results[0].bbox +
 								'">' + intersection + '</Block><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name +
 								'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
 								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block</messages></Response>';
@@ -315,6 +317,7 @@ let getArea = function(req, res) {
 													],
 										'Block': {
 											'FIPS': result.results[0].block_fips,
+											'bbox': result.results[0].bbox,
 											'intersection': intersection,
 											},
 										'County': {
@@ -344,6 +347,7 @@ let getArea = function(req, res) {
 					else {
 						if (format === undefined || format === 'xml') {
 							var xml = '<Response status="OK" executionTime="0"><Block FIPS="' + result.results[0].block_fips +
+								'" bbox="' + result.results[0].bbox +
 								'"/><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name +
 								'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
 								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block</messages></Response>';
@@ -357,6 +361,7 @@ let getArea = function(req, res) {
 													],
 										'Block': {
 											'FIPS': result.results[0].block_fips,
+											'bbox': result.results[0].bbox,
 											},
 										'County': {
 											'FIPS': result.results[0].county_fips,
@@ -388,13 +393,14 @@ let getArea = function(req, res) {
 				// application to crash, when a user enters coordinates outside the US boundaries
 				else if (result.results.length === 0){
 					if (format === undefined || format === 'xml') {
-						var xml = '<Response status="OK" executionTime="0"><Block FIPS="null"/><County FIPS="null" name="null"/><State FIPS="null" code="null" name="null"/></Response>';
+						var xml = '<Response status="OK" executionTime="0"><Block FIPS="null" bbox="null"/><County FIPS="null" name="null"/><State FIPS="null" code="null" name="null"/></Response>';
 						res.status(200).set('Content-Type', 'text/xml').send(xml);
 					}
 					else if (format === 'json' || format === 'jsonp') {
 						var json = {
 							'Block': {
 								'FIPS': null,
+								'bbox': null,
 								},
 							'County': {
 								'FIPS': null,
@@ -422,6 +428,7 @@ let getArea = function(req, res) {
 				else {
 					if (format === undefined || format === 'xml') {
 						var xml = '<Response status="OK" executionTime="0"><Block FIPS="' + result.results[0].block_fips +
+									'" bbox="' + result.results[0].bbox +
 									'"/><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name +
 									'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
 									'" name="' + result.results[0].state_name + '"/></Response>';
@@ -431,6 +438,7 @@ let getArea = function(req, res) {
 						var json = {
 							'Block': {
 								'FIPS': result.results[0].block_fips,
+								'bbox': result.results[0].bbox,
 								},
 							'County': {
 								'FIPS': result.results[0].county_fips,
