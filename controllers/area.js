@@ -30,10 +30,14 @@ pg_query(q, [], function(pg_err, pg_rows, pg_res) {
 
 var query_area = function(lat, lon, callback) {
 
-// The SQL query updated by Ahmad Aburizaiza
+	// The SQL query updated by Ahmad Aburizaiza
 	var bbox = "string_to_array(replace(replace(replace(Cast(box2d(geom) as varchar), ' ', ','), 'BOX(', ''), ')', ''),',')::numeric(10,7)[]";
-	var q = 'SELECT block_fips,'+bbox+' as bbox,county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc FROM ' +
-		DB_SCHEMA + '.areaapi_block WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ORDER BY block_fips';
+	
+	var q = 'SELECT block_fips,'+bbox+' as bbox,';
+	q = q + 'county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc ';
+	q = q + 'FROM ' + DB_SCHEMA + '.areaapi_block ';
+	q = q + 'WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ';
+	q = q + 'ORDER BY st_distance(ST_SetSRID(ST_Point($2, $1),4326),geom)';
 	
 	var vals = [lat, lon];
 
@@ -303,7 +307,7 @@ let getArea = function(req, res) {
 								'" bbox="' + result.results[0].bbox +
 								'">' + intersection + '</Block><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name +
 								'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
-								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block</messages></Response>';
+								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks.</messages></Response>';
 							res.status(200).set('Content-Type', 'text/xml').send(xml);
 								}
 						else if (format === 'json' || format === 'jsonp') {
@@ -313,7 +317,7 @@ let getArea = function(req, res) {
 							}
 							var json = {
 										'messages': [
-													'FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block'
+													'FCC0001: The coordinate lies on the boundary of mulitple blocks.'
 													],
 										'Block': {
 											'FIPS': result.results[0].block_fips,
@@ -350,14 +354,14 @@ let getArea = function(req, res) {
 								'" bbox="' + result.results[0].bbox +
 								'"/><County FIPS="' + result.results[0].county_fips + '" name="' + result.results[0].county_name +
 								'"/><State FIPS="' + result.results[0].state_fips + '" code="' + result.results[0].state_code +
-								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block</messages></Response>';
+								'" name="' + result.results[0].state_name + '"/><messages>FCC0001: The coordinate lies on the boundary of mulitple blocks, the block contains the clicked location is selected. For a complete list use showall=true to display \'intersection\' element in the Block</messages></Response>';
 						
 							res.status(200).set('Content-Type', 'text/xml').send(xml);
 						}
 						else if (format === 'json' || format === 'jsonp') {
 							var json = {
 										'messages': [
-													'FCC0001: The coordinate lies on the boundary of mulitple blocks, first FIPS is displayed. For a complete list use showall=true to display \'intersection\' element in the Block'
+													'FCC0001: The coordinate lies on the boundary of mulitple blocks, the block contains the clicked location is selected. For a complete list use showall=true to display \'intersection\' element in the Block'
 													],
 										'Block': {
 											'FIPS': result.results[0].block_fips,
@@ -483,6 +487,5 @@ let getArea = function(req, res) {
 		}
 	});
 };
-
 
 module.exports.getArea = getArea;
