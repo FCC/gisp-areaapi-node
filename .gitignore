@@ -46,3 +46,4 @@ app.zip
 
 *.env
 *.env.*
+.idea/
