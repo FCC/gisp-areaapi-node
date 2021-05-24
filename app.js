@@ -7,6 +7,7 @@
 // **********************************************************
 // require
 
+require('dotenv').config();
 var express = require('express');
 var fs = require('fs');
 var morgan = require('morgan');
@@ -16,17 +17,11 @@ var path = require('path');
 var fsr = require('file-stream-rotator');
 var helmet = require('helmet');
 
-let package_json = require('./package.json');
-
-let dotenv = require('dotenv').load();
-
 let area = require('./controllers/area.js');
 
 
 // **********************************************************
 // config
-
-let NODE_ENV = process.env.NODE_ENV;
 
 let NODE_PORT = process.env.PORT;
 
@@ -36,9 +31,6 @@ let NODE_HOST = process.env.HOST;
 // **********************************************************
 // console start
 
-console.log('package_json.name : '+ package_json.name );
-console.log('package_json.version : '+ package_json.version );
-console.log('package_json.description : '+ package_json.description );
 console.log('## ENV ## DB_PG: '+process.env.DB_PG);
 console.log('## ENV ## DB_SCHEMA: '+process.env.DB_SCHEMA);
 
