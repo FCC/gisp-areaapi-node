@@ -24,19 +24,19 @@
                     "type": "number",
                     "default": ""
                 }, {
-                    "name": "longitude",                    
+                    "name": "longitude",
                     "in": "query",
                     "description": "Longitude [-180 180] in decimal or DMS (degrees:minutes:seconds)<br>Examples: -77.51 or 77:30:36W",
                     "required": true,
                     "type": "number",
                     "default": ""
                 }, {
-                    "name": "censusYear",                    
-                    "in": "path",
-                    "description": "Returns results based on census year.<br><b>Valid values:</b> 2010 (default)",
+                    "name": "censusYear",
+                    "in": "query",
+                    "description": "Returns results based on census year.<br><b>Valid values:</b> 2010 or 2020 (default)",
                     "required": true,
                     "type": "number",
-                    "default": "2010"
+                    "default": "2020"
                 }, {
                     "name": "showall",                    
                     "in": "query",

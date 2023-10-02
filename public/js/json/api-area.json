@@ -30,6 +30,13 @@
                     "required": true,
                     "type": "number",
                     "default": ""
+                },{
+                    "name": "censusYear",
+                    "in": "query",
+                    "description": "Returns results based on census year.<br><b>Valid values:</b> 2010 or 2020 (default)",
+                    "required": true,
+                    "type": "number",
+                    "default": "2020"
                 }, {
                     "name": "format",                    
                     "in": "query",

@@ -61,7 +61,7 @@ app.use('/api/census', function(req, res, next) {
   console.log('redirect to /');
   res.redirect(301, newUrl);
 
-    // next();
+ // next();
 });
 
 

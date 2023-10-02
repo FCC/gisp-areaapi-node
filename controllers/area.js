@@ -31,28 +31,50 @@ db.connect()
     });
 
 
-var query_area = function (lat, lon, callback) {
+function nullDataTransformer(input){
+    if (input === null || input.toString() === 'NaN'){
+        return 'data unavailable';
+    }
+    return input;
+}
+
+var query_area = function (lat, lon, year,  callback) {
+// when defaults to 2020, make sure the year params are set as well.
+    let selection_year_table = '2020';
+    let table_suffix = '_2020';
+    if (!year){year = '2020';}
+    if (year && year !== '2010'){
+        selection_year_table = year.toString();
+        table_suffix='_'+selection_year_table;
+    }else if (year && year === '2010'){
+        selection_year_table = '2015';
+        table_suffix='';
+    }
 
     // The SQL query updated by Ahmad Aburizaiza
     var bbox = "string_to_array(replace(replace(replace(Cast(box2d(geom) as varchar), ' ', ','), 'BOX(', ''), ')', ''),',')::numeric(10,7)[]";
 
     var q = 'SELECT block_fips,' + bbox + ' as bbox,';
-    q = q + 'county_fips,county_name,state_fips,state_code,state_name,pop2015 as block_pop_2015,amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc ';
-    q = q + 'FROM ' + DB_SCHEMA + '.areaapi_block ';
+    q = q + 'county_fips,county_name,state_fips,state_code,state_name,pop'+selection_year_table+' as block_pop_'+selection_year_table+',amt,bea,bta,cma,eag,ivm,mea,mta,pea,rea,rpc,vpc ';
+    q = q + 'FROM ' + DB_SCHEMA + '.areaapi_block'+table_suffix+' ';
     q = q + 'WHERE ST_Intersects(geom, ST_Buffer(ST_SetSRID(ST_MakePoint($2, $1),4326),0.0001)) ';
     q = q + 'ORDER BY st_distance(ST_SetSRID(ST_Point($2, $1),4326),geom)';
 
     var vals = [lat, lon];
 
-    db.any(q, vals)
-        .then(pg_rows => {
+    console.log(q.replace('$1',lat).replace('$1',lat).replace('$2',lon).replace('$2',lon));
+    let v = db.query(q, vals).then(pg_rows => {
             for (let i = 0; i < pg_rows.length; i++) {
-                pg_rows[i].block_pop_2015 = parseInt(pg_rows[i].block_pop_2015, 10);
+                pg_rows[i]['block_pop_'+selection_year_table] = nullDataTransformer(parseInt(pg_rows[i]['block_pop_'+selection_year_table], 10));
+                for (const property in pg_rows[i]) {
+                    pg_rows[i][property] = nullDataTransformer(pg_rows[i][property]);
+                }
             }
 
+
             let entry = {
-                'input': {'lat': lat, 'lon': lon},
-                'results': pg_rows,
+                'input': {'lat': lat, 'lon': lon,'censusYear':year},
+                'results': pg_rows
             };
 
             callback(null, entry);
@@ -75,14 +97,16 @@ let getArea = function (req, res) {
     longitude = req.query.longitude; // for old API
     showall = req.query.showall; // for old API
     format = req.query.format; // for old API
-    year = req.params.year;
+    year = req.query.censusYear;
 
-    if (year !== '2010' && year !== undefined) {
-        console.log('\n' + 'The only available census year is 2010');
+    console.log(req.query, req.params);
+
+    if ((year !== '2010' && year !== '2020') && year !== undefined) {
+        console.log('\n' + 'The only available census years are 2010 and 2020');
         res.status(400).send({
             'status': 'error',
             'statusCode': '400',
-            'statusMessage': 'The only available census year for now is 2010',
+            'statusMessage': 'The only available census years are 2010 and 2020',
         });
         return;
     }
@@ -271,7 +295,7 @@ let getArea = function (req, res) {
         return;
     }
 
-    query_area(lat1, lon1, function (error, result) {
+    query_area(lat1, lon1, year, function (error, result) {
         if (error) {
             res.status(400).send({
                 'status': 'error',
